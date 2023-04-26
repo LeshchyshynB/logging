@@ -1,42 +1,30 @@
 from libraries import *
+from enum import Enum
 
 FILE_FORMAT = "%Y-%m-%d"
 
-CURRENT_FILE = datetime.now().strftime(FILE_FORMAT)
+CURRENT_FILE = lambda: datetime.now().strftime(FILE_FORMAT)
 
-DIRECTORY_PATH = f"logs/{CURRENT_FILE}.log"
+DIRECTORY_PATH = lambda: f"logs/{CURRENT_FILE()}.log"
 
 TIME_FORMAT = "%H:%M:%S"
 
-LEVELS = {
-	"NOTSET_LEVEL": 0,
+class Levels(Enum): 
+	NOTSET = 0, Fore.WHITE
+	DEBUG = 10, Fore.WHITE
+	INFO = 20, Fore.GREEN
+	WARNING = 30, Fore.YELLOW
+	ERROR = 40, Fore.MAGENTA
+	CRITICAL = 50, Fore.RED
 
-	"DEBUG_LEVEL": 10,
+	def __int__(self):
+		return self.value[0]
 
-	"INFO_LEVEL": 20,
+	def get_color(self):
+		return self.value[1]
 
-	"WARNING_LEVEL": 30,
-
-	"ERROR_LEVEL": 40,
-
-	"CRITICAL_LEVEL": 50,
-}
-
-NAMES = {
-	"notset": "NOTSET",
-	"debug": Fore.WHITE + "DEBUG",
-	"info": Fore.GREEN + "INFO",
-	"warning": Fore.YELLOW + "WARNING",
-	"error": Fore.MAGENTA + "ERROR",
-	"critical": Fore.RED + "CRITICAL",
-}
-
-CURRENT_TIME = datetime.now().strftime(TIME_FORMAT)
+CURRENT_TIME = lambda: datetime.now().strftime(TIME_FORMAT)
 
 MIN_TO_LOG = 10
 
 MIN_TO_CONSOLE = 30
-
-IGNORE_LOG = False
-
-IGNORE_CONSOLE = True

@@ -1,36 +1,48 @@
 from settings import *
 import settings
-import loger
+from log_writer import ConsoleLogWriter, FileLogWriter
+
 
 class Logging:
+	writers = [
+		ConsoleLogWriter(min_log=settings.MIN_TO_CONSOLE),
+		FileLogWriter(min_log=settings.MIN_TO_LOG)
+	]
+
 
 	@classmethod
-	def notset(self, message):
-		loger.write_in_log(message, NAMES["notset"], LEVELS["NOTSET_LEVEL"])
+	def notset(cls, message):
+		cls._process_writers(message, Levels.NOTSET)
 	
 	@classmethod
-	def debug(self, message, ignore=False):
-		loger.write_in_log(message, NAMES["debug"], LEVELS["DEBUG_LEVEL"], ignore)
+	def debug(cls, message):
+		cls._process_writers(message, Levels.DEBUG)
 
 	@classmethod
-	def info(self, message, ignore=False):
-		loger.write_in_log(message, NAMES["info"], LEVELS["INFO_LEVEL"], ignore)
+	def info(cls, message):
+		cls._process_writers(message, Levels.INFO)
 
 	@classmethod
-	def warning(self, message, ignore=False):
-		loger.write_in_log(message, NAMES["warning"], LEVELS["WARNING_LEVEL"], ignore)
+	def warning(cls, message):
+		cls._process_writers(message, Levels.WARNING)
 
 	@classmethod
-	def error(self, message, ignore=False):
-		loger.write_in_log(message, NAMES["error"], LEVELS["ERROR_LEVEL"], ignore)
+	def error(cls, message):
+		cls._process_writers(message, Levels.ERROR)
 
 	@classmethod
-	def critical(self, message, ignore=False):
-		loger.write_in_log(message, NAMES["critical"], LEVELS["CRITICAL_LEVEL"], ignore)
+	def critical(cls, message):
+		cls._process_writers(message, Levels.CRITICAL)
 
 	@classmethod
-	def setting(self, min_console=30, min_log=10, ignore_console=True, ignore_log=False):
+	def setting(cls, min_console=30, min_log=10, writer=None):
 		settings.MIN_TO_LOG = min_log
 		settings.MIN_TO_CONSOLE = min_console
-		settings.IGNORE_LOG = ignore_log
-		settings.IGNORE_CONSOLE = ignore_console
+
+		if writers:
+			cls.writers = writers
+
+	@classmethod
+	def _process_writers(cls, message, level):
+		for writer in cls.writers:
+			writer.handle(message, level)
