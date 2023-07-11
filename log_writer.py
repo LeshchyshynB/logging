@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-import settings
+from . import settings
 
 class LogWriterBase(ABC):
 	def __init__(self, min_log=10):
