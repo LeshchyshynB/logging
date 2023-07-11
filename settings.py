@@ -1,4 +1,4 @@
-from libraries import *
+from .libraries import *
 from enum import Enum
 
 FILE_FORMAT = "%Y-%m-%d"
