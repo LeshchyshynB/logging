@@ -7,7 +7,7 @@ class LogWriterBase(ABC):
 		self.log_template = "{0} | [{1}] |: {2}"
 
 	def handle(self, message, level):
-		if self.min_log <= int(level):
+		if self.min_log < int(level):
 			self.write(message, level)
 
 	@abstractmethod
