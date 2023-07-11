@@ -1,6 +1,6 @@
-from settings import *
-import settings
-from log_writer import ConsoleLogWriter, FileLogWriter
+from .settings import *
+from . import settings
+from .log_writer import ConsoleLogWriter, FileLogWriter
 
 
 class Logging:
